@@ -5,13 +5,13 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_library(Vole_Machine
-        src/ALU.cpp
+        ALU/src/ALU.cpp
         Instruction/src/Instruction.cpp
         Register/src/Register.cpp
 )
 
 target_include_directories(Vole_Machine PUBLIC
-        include
+        ALU/include
         Instruction/include
         Register/include
 )
