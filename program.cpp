@@ -1,4 +1,4 @@
-#include<program.h>
+#include"program.h"
 #include<fstream>
 #include <cctype>
 #include <string>
