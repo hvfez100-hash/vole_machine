@@ -9,9 +9,9 @@ class program{
     std::vector<uint16_t> instructions;
     public :
  void addInstruction (	uint16_t instruction );
- uint16_t getInstruction (std::size_t index);
+ uint16_t getInstruction (std::size_t index) const;
  std::size_t getSize() const;
- bool loadFromFile(std::string &filename);
+ bool loadFromFile(const std::string &filename);
  void clear();
 };
 #endif
