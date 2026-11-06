@@ -23,6 +23,7 @@ public:
     void executeInstruction(Memory& memory);
     void reset();
     bool isHalted();
+    bool hasError() const { return executionError; }
     std::uint8_t getPC();
     std::uint16_t getIR();
     Register& getRegister(std::uint8_t index);
