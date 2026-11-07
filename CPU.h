@@ -11,10 +11,10 @@
 class CPU {
 private:
     Register registers[16];
-    std::uint8_t pc;
-    std::uint16_t ir;
-    bool halted;
-    bool executionError;
+    std::uint8_t pc = 0;
+    std::uint16_t ir = 0;
+    bool halted= false;
+    bool executionError = false;
     std::string errorMessage;
     ALU alu;
 public:

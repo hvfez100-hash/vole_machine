@@ -6,7 +6,7 @@ class Register
 {
     private:
 
-        uint8_t value;
+        uint8_t value = 0;
 
     public:
 

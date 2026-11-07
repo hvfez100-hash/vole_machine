@@ -1,6 +1,9 @@
 #include "Memory.h"
 #include <iostream>
 
+Memory::Memory() {
+    clear();
+}
 
 uint8_t Memory::read(uint8_t address){
 return cells[address];

@@ -1,5 +1,5 @@
 #include "CPU.h"
-
+#include <iostream>
 bool CPU::fetch(Memory& memory){
   if (pc == 255){
   return false;
@@ -36,11 +36,17 @@ void CPU::executeInstruction(Memory& memory){
    uint8_t data = (inst.getOperand2() << 4) | inst.getOperand3();
    registers[inst.getOperand1()].setValue(data);
    break;}
-   case 3: {
-   uint8_t address = (inst.getOperand2() << 4) | inst.getOperand3();
-   uint8_t data = registers[inst.getOperand1()].getValue();
-   memory.write(address, data);
-   break;}
+       case 3:  {
+           if (inst.getOperand2() == 0xF && inst.getOperand3() == 0xF) {
+               std::cout << (int)registers[inst.getOperand1()].getValue() << std::endl;
+           }
+           else {
+               uint8_t address = (inst.getOperand2() << 4) | inst.getOperand3();
+               uint8_t data = registers[inst.getOperand1()].getValue();
+               memory.write(address, data);
+           }
+           break;
+       }
    case 4: {
    registers[inst.getOperand3()].setValue(registers[inst.getOperand2()].getValue());
    break;}
