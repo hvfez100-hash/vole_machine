@@ -30,7 +30,10 @@ bool program::loadFromFile(const std::string &filename)
     {
         if (!line.empty() && line.back() == '\r')
             line.pop_back();
-        if (line.empty()||line[0] == ';')
+        if (line.find_first_not_of(" \t") == std::string::npos)
+            continue;
+
+        if (line[line.find_first_not_of(" \t")] == ';')
             continue;
         if (line.length() != 4)
             return false;

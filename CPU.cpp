@@ -1,7 +1,11 @@
 #include "CPU.h"
-#include <iostream>
 bool CPU::fetch(Memory& memory){
+  if (halted || executionError){
+  return false;
+}
   if (pc == 255){
+  executionError = true;
+  errorMessage = "Program counter ran past the end of memory";
   return false;
 }
   uint8_t firstByte = memory.read(pc);
@@ -36,17 +40,11 @@ void CPU::executeInstruction(Memory& memory){
    uint8_t data = (inst.getOperand2() << 4) | inst.getOperand3();
    registers[inst.getOperand1()].setValue(data);
    break;}
-       case 3:  {
-           if (inst.getOperand2() == 0xF && inst.getOperand3() == 0xF) {
-               std::cout << (int)registers[inst.getOperand1()].getValue() << std::endl;
-           }
-           else {
-               uint8_t address = (inst.getOperand2() << 4) | inst.getOperand3();
-               uint8_t data = registers[inst.getOperand1()].getValue();
-               memory.write(address, data);
-           }
-           break;
-       }
+   case 3: {
+   uint8_t address = (inst.getOperand2() << 4) | inst.getOperand3();
+   uint8_t data = registers[inst.getOperand1()].getValue();
+   memory.write(address, data);
+   break;}
    case 4: {
    registers[inst.getOperand3()].setValue(registers[inst.getOperand2()].getValue());
    break;}
@@ -99,15 +97,15 @@ void CPU::reset(){
   errorMessage = "";
 }
 
-bool CPU::isHalted(){
+bool CPU::isHalted() const{
  return halted;
 }
 
-std::uint8_t CPU::getPC(){
+std::uint8_t CPU::getPC() const{
  return pc;
 }
 
-std::uint16_t CPU::getIR(){
+std::uint16_t CPU::getIR() const{
  return ir;
 }
 

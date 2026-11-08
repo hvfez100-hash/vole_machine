@@ -1,5 +1,6 @@
 #include "MainUI.h"
 #include "Simulator.h"
+#include <iomanip>
 #include<iostream>
 using namespace std;
 
@@ -18,10 +19,9 @@ void MainUI::displayMenu() {
 }
 void MainUI::showMemory() {
 	cout << "Memory:" << endl;
-
 	for (int i = 0; i < 256; i++) {
 		cout << hex << i << ":"
-			 << (int)simulator->readMemory(i) << "  ";
+			<< setw(2) << setfill('0') << (int)simulator->readMemory(i) << "  ";
 
 		if ((i + 1) % 16 == 0) {
 			cout << endl;
@@ -32,24 +32,31 @@ void MainUI::showMemory() {
 }
 
 void MainUI::showRegisters() {
-	cout << "Registers:" << endl;
-	for (int i = 0; i < 16; i++) {
-		cout << "R" << i << ": "
-			 << (int)simulator->getRegister(i) << "\t";
+		cout << "Registers:" << endl;
+		for (int i = 0; i < 16; i++) {
+			cout << "R" << dec << i << ": "
+				 << hex << uppercase << setw(2) << setfill('0')
+				 << (int)simulator->getRegister(i) << "\t";
 
-		if ((i + 1) % 4 == 0)
-			cout << endl;
+			if ((i + 1) % 4 == 0)
+				cout << endl;
+		}
+		cout << dec << nouppercase << setfill(' ');
+		cout << "\n::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n" << endl;
 	}
-	cout << "\n::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n" << endl;
 
-}
 
 void MainUI::loadProgram() {
 	vector<uint16_t> instructions;
-	string hex;
+	string input;
 	cout << "Enter instructions (C000 to stop):" << endl;
-	while (cin >> hex && hex != "C000" && hex != "c000") {
-		instructions.push_back(stoul(hex, nullptr, 16));
+	while (cin >> input && input != "C000" && input != "c000") {
+		try {
+			instructions.push_back(stoul(input, nullptr, 16));
+		}
+		catch (...) {
+			cout << "Invalid hex instruction: " << input << ". Please try again." << endl;
+		}
 	}
 	instructions.push_back(0xC000);
 	simulator->loadprogram(instructions);
@@ -65,8 +72,12 @@ void MainUI::run(){
 	int choice=0;
 	do {
 		displayMenu();
-		cin >> choice;
-		switch (choice) {
+		if (!(cin >> choice)) {
+			cin.clear();
+			cin.ignore(10000, '\n');
+			cout << "Invalid choice. Please enter a number." << endl;
+			continue;
+		}		switch (choice) {
 			case 1:
 				loadProgram();
 				break;
@@ -75,7 +86,7 @@ void MainUI::run(){
 				break;
 			case 3:
 				ExecuteAll();
-				cout << "Playing simulation..." << "\n------------------------------\n" << endl;
+				cout << "Program Executed." << "\n------------------------------\n" << endl;
 				break;
 			case 4:
 				showMemory();

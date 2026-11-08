@@ -1,7 +1,7 @@
 #ifndef VOLE_MACHINE_CPU_H
 #define VOLE_MACHINE_CPU_H
 
-#include <stdint.h>
+#include <cstdint>
 #include <string>
 #include "Register.h"
 #include "ALU.h"
@@ -22,10 +22,11 @@ public:
     Instruction decode(std::uint16_t rawValue);
     void executeInstruction(Memory& memory);
     void reset();
-    bool isHalted();
+    bool isHalted() const;
     bool hasError() const { return executionError; }
-    std::uint8_t getPC();
-    std::uint16_t getIR();
+    std::string getErrorMessage() const { return errorMessage; }
+    std::uint8_t getPC() const;
+    std::uint16_t getIR() const;
     Register& getRegister(std::uint8_t index);
 };
 
