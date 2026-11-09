@@ -1,13 +1,15 @@
 #pragma once
-
 #include "Simulator.h"
+#include "program.h"
 class MainUI
 {
 private:
 	Simulator* simulator;
+	program* prog;
 
 public:
-	MainUI(Simulator* sim = nullptr);
+	MainUI(Simulator* sim, program* p);
+	bool loadProgramfromFile();
 	void loadProgram();
 	void ExecuteOneStep();
 	void ExecuteAll();
@@ -15,7 +17,6 @@ public:
 	void showMemory();
 	void showRegisters();
 	void run();
-
 };
 
 

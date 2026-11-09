@@ -1,10 +1,12 @@
 #include "MainUI.h"
 #include "Simulator.h"
+#include "program.h"
 
 int main()
 {
     Simulator sim;
-    MainUI menu(&sim);
+    program prog;
+    MainUI menu(&sim, &prog);
 
     menu.run();
 

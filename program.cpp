@@ -3,7 +3,6 @@
 #include <cctype>
 #include <string>
 #include<vector>
-#include<utility>
 void program::addInstruction(uint16_t instruction) {
     instructions.push_back(instruction);
 };
@@ -21,32 +20,44 @@ std::size_t program::getSize() const {
 bool program::loadFromFile(const std::string &filename)
 {
     std::ifstream file(filename);
-    if (!file.is_open()) {
+    if (!file.is_open())
         return false;
-    }
+
     std::string line;
-    std:: vector<uint16_t> testcase;
-    while (std:: getline(file , line))
-    {
-        if (!line.empty() && line.back() == '\r')
-            line.pop_back();
-        if (line.find_first_not_of(" \t") == std::string::npos)
-            continue;
+    std::vector<uint16_t> loaded;
+    bool first = true;
 
-        if (line[line.find_first_not_of(" \t")] == ';')
+    while (std::getline(file, line)) {
+        if (first && line.size() >= 3 &&
+            (unsigned char)line[0] == 0xEF && (unsigned char)line[1] == 0xBB &&
+            (unsigned char)line[2] == 0xBF)
+            line.erase(0, 3);
+        first = false;
+
+        size_t sc = line.find(';');
+        if (sc != std::string::npos)
+            line.erase(sc);
+
+        size_t b = line.find_first_not_of(" \t\r\n");
+        if (b == std::string::npos)
             continue;
-        if (line.length() != 4)
+        size_t e = line.find_last_not_of(" \t\r\n");
+        line = line.substr(b, e - b + 1);
+
+        if (line.length() != 4) {
             return false;
-        for (int i = 0 ; i < 4 ; i++)
-        {
-            if ( !std::isxdigit(static_cast<unsigned char>(line[i])))
-                return false;
         }
-        unsigned long no = std::stoul(line , nullptr , 16);
-        testcase.push_back(static_cast<uint16_t>(no));
+        for (char c : line) {
+            if (!std::isxdigit(static_cast<unsigned char>(c))) {
+                return false;
+            }
+        }
+        loaded.push_back(static_cast<uint16_t>(std::stoul(line, nullptr, 16)));
     }
-    instructions = std:: move(testcase);
+    if (!instructions.empty() && instructions.back() == 0xC000) {
+        instructions.pop_back();
+    }
+
+    instructions.insert(instructions.end(), loaded.begin(), loaded.end());
     return true;
-
-
-};
+}
