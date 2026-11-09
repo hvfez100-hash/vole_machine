@@ -4,8 +4,6 @@
 
 ## Team Members
 
-**Section:** []
-
 **Team:**
 - Ahmed Abdulaziz Ahmed – 20260968
 - Kamel Abdelsalam Kamel  – 20261624
