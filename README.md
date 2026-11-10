@@ -1,6 +1,6 @@
 # vole_machine
 # Vole Machine Simulator
-### CS213 – Assignment 2 – Part 3
+### CS213 – Assignment 2 
 
 ## Team Members
 
@@ -10,13 +10,13 @@
 - Sara Ashraf Mohamed  – 20261622
 - Zyna Nasreldin Mabrouk  – 20260945
 
-**Project Video:** 
+**Project Video:** https://youtu.be/GR4jPG-LfpA?si=ZcuLvReQGrCpKyEg
 
 ---
 
 ## About the Project
 
-This project is a simulation of the Vole Machine. It was developed as part of CS213 Assignment 2 – Part 3.
+This project is a simulation of the Vole Machine. It was developed as part of CS213 Assignment 2.
 
 The simulator allows users to write or load instructions, execute them, and follow what happens inside the machine.
 
@@ -311,5 +311,3 @@ The `code` folder contains the main project files:
 | tests.cpp | Contains automated tests. |
 
 ---
-
-**CS213 – Assignment 2 – Part 2**
